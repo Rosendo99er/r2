@@ -5,7 +5,7 @@
 <title>Chatbot</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" />
 
-<!-- Der Abruf von Google-Fonts darf nur im Kontext "Clara free" aktiviert sein! -->
+<!-- Der Abruf von Google-Fonts darf nur im Kontext "Chati free" aktiviert sein! -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500&amp;display=swap" rel="stylesheet" />
@@ -179,6 +179,7 @@
 --theme-text-5-it: "Fidati di Chati";
 --theme-value-6-it: "Chi o cosa è cream collection?";
 --theme-text-6-it: "Informazioni su creamco";
+
 ########################*/
 
 /* ########################customer
@@ -567,7 +568,7 @@
 }
 
 
-/* ++++++++++++++++++++++++ Anwendung Clara free ++++++++++++++++++++++++ 
+/* ++++++++++++++++++++++++ Anwendung Chati free ++++++++++++++++++++++++ 
 
 :root {
 --rules-context: ChatbotIntern; 
@@ -938,14 +939,14 @@ html, body {
 
 
 
- ++++++++++++++++++++++++ ENDE Anwendung Clara free ++++++++++++++++++++++++ */
+ ++++++++++++++++++++++++ ENDE Anwendung Chati free ++++++++++++++++++++++++ */
 
 
 
 
 
 
-/* ++++++++++++++++++++++++ Anwendung Clara ++++++++++++++++++++++++ 
+/* ++++++++++++++++++++++++ Anwendung Chati ++++++++++++++++++++++++ 
 
 :root {
 --rules-context: ChatbotConsumer; 
@@ -1061,7 +1062,7 @@ html, body {
 
 
 
-  ++++++++++++++++++++++++ ENDE Anwendung Clara ++++++++++++++++++++++++ */
+  ++++++++++++++++++++++++ ENDE Anwendung Chati ++++++++++++++++++++++++ */
 
 
 
@@ -1868,7 +1869,7 @@ padding-left: 0px;
 
 
 
-  /* ++++++++++++++++++++++++ ENDE Anwendung Chatbot mit Kontaktformular ++++++++++++++++++++++++ */
+ /* ++++++++++++++++++++++++ ENDE Anwendung Chatbot mit Kontaktformular ++++++++++++++++++++++++ */
 
 
 /* ++++++++++++++++++++++++ Anwendung Chatbot für Factoring ++++++++++++++++++++++++ 
@@ -3032,14 +3033,14 @@ padding-left: 0px;
 
     /* Dropdown-Styling für #language-dropdown */
     #language-dropdown {
-      width: 100%; /* Nimmt die volle Breite der jeweiligen Container ein */
-      padding: 5px; /* Optionales Padding für bessere Lesbarkeit */
-      box-sizing: border-box; /* Bezieht Padding in die Gesamtbreite ein */
+      width: 100%;
+      padding: 5px;
+      box-sizing: border-box;
       font-family: var(--company-font-family);
       font-size: var(--font-size-text);
       color: var(--primary-font-color);
       border: none;
-      background-color: var(--primary-background-color); /* Setzt die Hintergrundfarbe */
+      background-color: var(--primary-background-color);
       margin-left: 20px;
     }
 
@@ -3055,7 +3056,7 @@ padding-left: 0px;
 
     
     #theme {
-      width: auto;
+      max-width: 100%;
       padding: 5px 15px 5px 10px;
       box-sizing: border-box;
       font-family: var(--company-font-family);
@@ -4486,7 +4487,7 @@ textarea:-webkit-autofill {
     font-size: var(--font-size-button);
     text-decoration: none;
     padding: 5px 10px;
-    border: none;
+    border: 1px solid var(--primary-background-color);
     border-radius: var(--primary-border-radius);
     background-color: var(--primary-button-color);
     color: var(--tertiary-font-color);
@@ -5146,7 +5147,7 @@ textarea:-webkit-autofill {
 
     </div>
 
-    <div id="clara-image" alt="Clara Bild">
+    <div id="clara-image" alt="Chati Bild">
     </div>    
 
 
@@ -5944,7 +5945,7 @@ function saveBotMessage(botMessage) {
     conversationHistory.push({ role: 'assistant', content: botMessage });
 
     // ChatbotHistory aktualisieren mit HTML <br> Tags für Absätze
-    const formattedBotMessage = "\n\nAntwort von Clara:\n\n" + botMessage;
+    const formattedBotMessage = "\n\nAntwort von Chati:\n\n" + botMessage;
     chatbotHistory.push({ role: 'assistant', content: formattedBotMessage });
 }
 
@@ -6113,18 +6114,19 @@ async function sendMessage() {
 	console.log('Nach processIncomingData');
         console.log("Finale Antwort empfangen.");
 
-        //auch im anderen Chatbot löschen
-        //saveMessage('user', message); // Speichern der Benutzernachricht im Verlauf
+        
+
+  // Status zurücksetzen
+  isWaitingForResponse = false;
 
 
 
-        // Status zurücksetzen
-        isWaitingForResponse = false;
+  // Loader verstecken
+  loaderElement.style.display = 'none';
+  document.getElementById('loader-container').style.display = 'none';
+  document.getElementById('loader-text').style.display = 'none';
 
-        // Loader verstecken
-          loaderElement.style.display = 'none';
-          document.getElementById('loader-container').style.display = 'none';
-          document.getElementById('loader-text').style.display = 'none';
+
 
     } catch (error) {
         console.error("Request failed:", error);
@@ -6184,6 +6186,17 @@ async function processIncomingData(response) {
 
 
 }
+
+
+function deleteLink() {
+  const lastBotMessage = document.querySelectorAll('.bot-message:last-child .suggested-link');
+    lastBotMessage.forEach(link => {
+      const label = link.textContent;
+      link.replaceWith(document.createTextNode(label));
+    });
+  }
+
+
 
 
 
@@ -7830,6 +7843,7 @@ document.addEventListener('click', function(event) {
         // Nachricht in das Eingabefeld einfügen und senden
         const inputField = document.getElementById('chatbot-input');
         inputField.value = message; // Nachricht ins Feld einfügen
+        deleteLink();
         sendMessage(); // Vorhandene Sende-Funktion aufrufen
     }
 });
